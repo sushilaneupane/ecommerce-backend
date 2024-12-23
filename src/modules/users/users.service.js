@@ -9,7 +9,7 @@ class UserService {
     try {      
       return await this.UserRepository.getAllUsers();
     } catch (error) {
-      throw new Error('Error fetching user: ' + error.message);
+      throw new Error(error.message);
     }
   }
 
@@ -17,7 +17,7 @@ class UserService {
     try {
       const user = await this.UserRepository.getUserById(id);
       if (!user) {
-        throw new Error('User not found');
+        throw new Error('User not found with given userId');
       }
       return user;
     } catch (error) {

@@ -22,7 +22,7 @@ class UserRepository {
   async updateUser(id, firstName, lastName, phone, email, password) {            
     const [result] = await pool.execute(
       'UPDATE users SET firstName = ?, lastName = ?, email = ?, phone = ?, password = ? WHERE id = ?'
-      [firstName, lastName,email, phone, password, id]
+      [firstName, lastName, email, phone, password, id]
     );
     if (result.affectedRows === 0) throw new Error('User not found');
     return { id, firstName, lastName, phone, email, password};

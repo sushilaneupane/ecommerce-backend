@@ -1,0 +1,60 @@
+import  wishlistRepository from './wishlist.repository.js';
+
+class WishlistService {
+    constructor(){
+         this.wishlistRepository = new wishlistRepository();
+    }
+
+    async getAllWishlist(){
+        try {
+            return await this.wishlistRepository.getAllWishlist();
+        }
+        catch (error){
+            throw new Error('Error fetching category: ' + error.message);
+        }
+    }
+     
+    async getWishlistById(id){
+        try{
+            const wishlist = await this. wishlistRepository.getWishlistById(id);
+            if(!wishlist){
+                throw new Error('wishlist not found');
+            }
+            return wishlist;
+        }
+        catch(error){
+            throw new Error('Error fetching wishlist:' + error.message);
+        }
+    }
+
+    async createWishlist (userId, productId){
+        try{
+            return await this.wishlistRepository.createWishlist(userId, productId);
+        }
+        catch (error){
+            throw new Error ('Érror creating wishlist:' + error.message);
+        }
+    }
+    
+    async updateWishlist( id, userId, productId){
+        try{
+            return await this.wishlistRepository.updateWishlist(id, userId, productId);
+        }
+        catch(error){
+
+         throw new Error('Error updating wishlist:' + error.message);
+        }
+    }
+
+     async deleteWishlist(id){
+        try {
+            return await this.wishlistRepository.deleteWishlist(id);
+        }
+        catch (error){
+            throw new Error('Error deleting wishlist:' + error.message);
+        }
+     }
+    }
+     export default WishlistService
+
+

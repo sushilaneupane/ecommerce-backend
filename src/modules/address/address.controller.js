@@ -30,8 +30,7 @@ class AddressController {
   createAddress = async (req, res) => {
     try {
         const { province, district, zone, address, userId } = req.body;
-        console.log(req.body);
-        
+
         const newAddress = await this.addressService.createAddress(
             province,
             district,
@@ -48,9 +47,9 @@ class AddressController {
 
   updateAddress = async (req, res) => {
     const { id } = req.params;
-    const { province, district, zone, addressLine1, addressLine2, userId } = req.body;
+    const { province, district, zone, address, userId } = req.body;
     try {
-      const updatedAddress = await this.addressService.updateAddress(id, province, district, zone, addressLine1, addressLine2, userId);
+      const updatedAddress = await this.addressService.updateAddress(id, province, district, zone, address, userId);
       if (updatedAddress) {
         res.status(200).json(updatedAddress);
       } else {

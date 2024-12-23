@@ -39,6 +39,7 @@ class AddressRepository {
   }
 
   async deleteAddress(id) {
+    
     const [result] = await pool.execute('DELETE FROM address WHERE id = ?', [id]);
     if (result.affectedRows === 0) throw new Error('Address not found');
     return { message: 'Address deleted successfully' };

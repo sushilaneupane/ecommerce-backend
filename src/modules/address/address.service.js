@@ -39,17 +39,17 @@ class AddressService {
     }
   }
 
-  async updateAddresses(province, district, zone, address, userId) {
+  async updateAddress(id, province, district, zone, address, userId) {
     try {
-      return await this.addressRepository.updateAddresses(province, district, zone, address, userId); 
+      return await this.addressRepository.updateAddress(id,province, district, zone, address, userId); 
     } catch (error) {
       throw new Error('Error updating address: ' + error.message);
     }
   }
 
-  async deleteAddresses(id) {
+  async deleteAddress(id) {
     try {
-      return await this.addressRepository.deleteAddresses(id); 
+      return await this.addressRepository.deleteAddress(id); 
     } catch (error) {
       throw new Error('Error deleting address: ' + error.message);
     }
