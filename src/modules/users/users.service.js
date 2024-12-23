@@ -21,7 +21,7 @@ class UserService {
       }
       return user;
     } catch (error) {
-      throw new Error('Error fetching User: ' + error.message);
+      throw new Error(error.message);
     }
   }
 
