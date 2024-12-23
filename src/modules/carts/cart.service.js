@@ -8,6 +8,7 @@ class CartService {
   }
 
   async getAllCartss() {
+    
     try {
       return await this.cartRepository.getAllCarts();
     } catch (error) {
@@ -34,6 +35,7 @@ class CartService {
       throw new Error('Error creating cart: ' + error.message);
     }
   }
+  
   async updateCart(id, quantity, userId, productId) {
     try {      
       return await this.cartRepository.updateCart(id, quantity, userId, productId);
