@@ -10,6 +10,12 @@ class WishlistRepository {
     const [rows] = await pool.execute('SELECT * FROM wishlist WHERE id = ?', [id]);
     return rows[0];
   }
+  
+  async getWishlistByUserId(userId){
+    const [rows] = await pool.execute('SELECT * FROM wishlist WHERE userId = ?',[userId]);
+    return rows;
+
+  }
 
   async createWishlist( userId, productId) {
     const [result] = await pool.execute(

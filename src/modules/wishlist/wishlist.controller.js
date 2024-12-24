@@ -25,6 +25,18 @@ class WishlistController {
     }
   };
 
+  getWishlistByUserId = async (req, res) => {
+    const {userId } = req.params;
+    try {
+      const wishlistByUserId = await this.wishlistService.getWishlistByUserId(userId);
+      res.status(200).json( wishlistByUserId);
+    } catch (error) {
+      res.status(500).json({ message: 'Error fetching wishlist', error: error.message });
+    }
+  };
+  
+
+
   createWishlist = async (req, res) => {
     const { userId, productId } = req.body;
     try {

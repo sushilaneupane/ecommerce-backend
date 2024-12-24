@@ -26,6 +26,16 @@ class WishlistService {
             throw new Error('Error fetching wishlist:' + error.message);
         }
     }
+    async getWishlistByUserId(id){
+        try{
+            const wishlistByUserId = await this. wishlistRepository.getWishlistByUserId(id);
+           
+            return wishlistByUserId;
+        }
+        catch(error){
+            throw new Error('Error fetching wishlist:' + error.message);
+        }
+    }
 
     async createWishlist (userId, productId){
         try{
