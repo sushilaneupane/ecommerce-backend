@@ -10,6 +10,7 @@ export default (app) => {
   app.use('/api/categories', categoryRoutes);
   app.use('/api/products', productRoutes);
   app.use('/api/users', userRoutes);
+  app.use('/api/users/login', userRoutes);
   app.use('/api/address', addressRoutes);
   app.use('/api/carts', cartRoutes);
   app.use('/api/wishlist', wishlistRoute)

@@ -41,6 +41,22 @@ class UserRepository {
     if (result.affectedRows === 0) throw new Error('user not found');
     return { message: 'user deleted successfully' };
   }
-}
 
+   async getUserByEmail(email) {
+    try {
+      if (!email) {
+        throw new Error("Email is required to fetch the user");
+      }
+
+      const [rows] = await pool.execute(
+        'SELECT * FROM users WHERE email = ?', 
+        [email]
+      );
+
+      return rows[0] || null; 
+    } catch (error) {
+      throw new Error("Error fetching user by email: " + error.message);
+    }
+  }
+}
 export default UserRepository;

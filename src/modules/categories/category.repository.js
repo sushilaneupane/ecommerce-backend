@@ -18,6 +18,14 @@ class CategoryRepository {
     );
     return { id: result.insertId, name, description };
   }
+  async checkName (name){
+    const [result] = await pool.execute(
+    'SELECT * FROM categories WHERE name = ?',
+    [name]
+    );
+    return result;
+   }
+
 
   async updateCategory(id, name, description) {
     const [result] = await pool.execute(
