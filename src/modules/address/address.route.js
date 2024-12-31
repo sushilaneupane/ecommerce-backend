@@ -1,15 +1,17 @@
 import express from 'express';
 import AddressController from './address.controller.js';
+import checkAdminRole from '../middleware/check-admin.js';
+import verifyToken from '../middleware/verify-token.js';
 
 
 const router = express.Router();
 const addressController = new AddressController();
 
 
-router.get('/', addressController.getAllAddress);
-router.get('/:id', addressController.getAddressById); 
-router.post('/', addressController.createAddress);
-router.put('/:id', addressController.updateAddress);
-router.delete('/:id', addressController.deleteAddress);
+router.get('/', verifyToken,addressController.getAllAddress);
+router.get('/:id',verifyToken, addressController.getAddressById); 
+router.post('/',verifyToken, addressController.createAddress);
+router.put('/:id',verifyToken, addressController.updateAddress);
+router.delete('/:id',checkAdminRole, addressController.deleteAddress);
 
 export default router;

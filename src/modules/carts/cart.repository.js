@@ -3,7 +3,7 @@ import pool from '../../config/db.js';
 class CartRepository {
   async getAllCarts() {
     const [rows] = await pool.execute(  `SELECT 
-      cart.id, 
+      carts.id, 
       users.firstName, users.lastName, users.email, users.phone, 
       products.name AS productName, products.price,
       categories.name AS categoryName, categories.description AS categoryDescription
@@ -17,7 +17,7 @@ class CartRepository {
 
   async getCartById(id) {
     const [rows] = await pool.execute(  `SELECT 
-            cart.id, 
+            carts.id, 
             users.firstName, users.lastName, users.email, users.phone, 
             products.name AS productName, products.price,
             categories.name AS categoryName, categories.description AS categoryDescription

@@ -30,7 +30,7 @@ class CategoryController {
       const newCategory = await this.categoryService.createCategory(name, description);
       res.status(201).json(newCategory);
     } catch (error) {
-      res.status(500).json({ message: 'Error creating category', error: error.message });
+      res.status(401).json({ message: 'Error creating category', error: error.message });
     }
   };
 

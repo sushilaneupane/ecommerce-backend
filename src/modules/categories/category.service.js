@@ -27,6 +27,11 @@ class CategoryService {
 
   async createCategory(name, description) {
     try {
+      const alreadyExist = await this.categoryRepository.checkName(name);       
+      if (alreadyExist) {      
+        throw new Error('This name already exist');
+      }
+  
       return await this.categoryRepository.createCategory(name, description);
     } catch (error) {
       throw new Error('Error creating category: ' + error.message);
