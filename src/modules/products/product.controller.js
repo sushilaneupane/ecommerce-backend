@@ -59,7 +59,7 @@ class ProductController {
     const { categoryId } = req.params;
     try {
       const result = await this.productService.getProductsByCategoryId(categoryId);
-      res.status(result.status).json(result.message || result.data);
+     return res.status(result.status).json(result.message || result.data);
     } catch (error) {
       res.status(500).json({ message: 'Error fetching products for category', error: error.message });
     }
