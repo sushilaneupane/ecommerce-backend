@@ -10,5 +10,5 @@ router.get('/:id', productController.getProductById);
 router.post('/',checkAdminRole, productController.createProduct);
 router.put('/:id',checkAdminRole, productController.updateProduct);
 router.delete('/:id',checkAdminRole, productController.deleteProduct);
-
+router.get('/category/:categoryId',productController.getProductsByCategoryId)
 export default router;
