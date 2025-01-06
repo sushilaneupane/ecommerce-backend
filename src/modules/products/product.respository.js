@@ -7,6 +7,7 @@ class ProductRepository {
         products.id, 
         products.name AS productName, 
         products.price, 
+         products.description,
         categories.name AS categoryName, 
         categories.description AS categoryDescription
        FROM products
@@ -21,6 +22,7 @@ class ProductRepository {
         products.id, 
         products.name AS productName, 
         products.price, 
+        products.description,
         categories.name AS categoryName, 
         categories.description AS categoryDescription
        FROM products
