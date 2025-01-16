@@ -34,7 +34,7 @@ class UserController {
       const newUser = await this.userService.createUser(firstName, lastName, phone, email, password, role);
       return res.status(201).json(newUser);
     } catch (error) {
-      res.status(500).json({ message: 'Error creating user', error: error.message });
+      res.status(400).json({ message: 'Error creating user', error: error.message });
     }
   };
 
@@ -49,7 +49,7 @@ class UserController {
         res.status(404).json({ message: 'User not found' });
       }
     } catch (error) {
-      res.status(500).json({ message: 'Error updating user', error: error.message });
+      res.status(400).json({ message: 'Error updating user', error: error.message });
     }
   };
 
@@ -63,7 +63,7 @@ class UserController {
         res.status(404).json({ message: 'User not found' });
       }
     } catch (error) {
-      res.status(500).json({ message: 'Error deleting user', error: error.message });
+      res.status(400).json({ message: 'Error deleting user', error: error.message });
     }
   };
    
@@ -84,7 +84,7 @@ class UserController {
         res.status(404).json({ message: 'Invalid credentials' });
       }
     } catch (error) {
-      res.status(500).json({ 
+      res.status(400).json({ 
         message: 'Error logging in user', 
         error: error.message 
       });
