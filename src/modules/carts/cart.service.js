@@ -7,11 +7,18 @@ class CartService {
   }
 
   async getAllCartss() {
-    
     try {
       return await this.cartRepository.getAllCarts();
     } catch (error) {
-      throw new Error('Error fetching cart: ' + error.message);
+      throw new Error(error);
+    }
+  }
+
+  async getCartsByUserId(userId) {
+    try {
+      return await this.cartRepository.getCartsByUserId(userId);
+    } catch (error) {
+      throw new Error(error);
     }
   }
 

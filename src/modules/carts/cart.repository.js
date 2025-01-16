@@ -31,6 +31,35 @@ class CartRepository {
     return rows[0];
   }
 
+  async getCartsByUserId(userId) {
+    try {
+      const [rows] = await pool.execute(`
+        SELECT 
+          carts.id, 
+          users.firstName, 
+          users.lastName, 
+          users.email, 
+          users.phone, 
+          users.id, 
+          quantity,
+          products.name AS productName, 
+          products.price,
+          categories.name AS categoryName, 
+          categories.description AS categoryDescription
+        FROM carts
+        INNER JOIN users ON carts.userId = users.id
+        INNER JOIN products ON carts.productId = products.id
+        INNER JOIN categories ON products.categoryId = categories.id
+        WHERE users.id = ?`, 
+        [userId]
+      );
+      return rows;
+    } catch (error) {
+      throw new Error(`Database query failed: ${error.message}`);
+    }
+  }
+  
+
   async createCart(quantity, userId, productId) {
     const [result] = await pool.execute(
       'INSERT INTO carts (quantity, userId, productId) VALUES (?, ?, ?)',

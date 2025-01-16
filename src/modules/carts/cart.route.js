@@ -9,6 +9,7 @@ const cartController = new CartController();
 
 
 router.get('/',verifyToken, cartController. getAllCarts);
+router.get('/user/:userId', verifyToken, cartController.getCartsByUserId)
 router.get('/:id',verifyToken, cartController.getCartById);
 router.post('/',verifyToken, cartController.createCart);
 router.put('/:id',verifyToken, cartController.updateCart);
