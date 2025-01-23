@@ -35,7 +35,20 @@ class WishlistRepository {
       }
 
   async getWishlistByUserId(userId) {
-    const [rows] = await pool.execute('SELECT * FROM wishlist WHERE userId = ?', [userId]);
+    const [rows] = await pool.execute(
+      `SELECT 
+        wishlist.id, users.id AS userId,
+        users.firstName, users.lastName, users.email, users.phone, 
+        products.name AS productName, products.price,
+        categories.name AS categoryName, categories.description AS categoryDescription
+       FROM wishlist
+       INNER JOIN users ON wishlist.userId = users.id
+       INNER JOIN products ON wishlist.productId = products.id
+       INNER JOIN categories ON products.categoryId = categories.id
+       WHERE users.id= ?`, 
+      [userId]
+    );
+
 
     if (rows.length === 0) throw new Error('No wishlist found for this user');
     return rows;
@@ -55,7 +68,7 @@ class WishlistRepository {
     'SELECT * FROM wishlist WHERE userId = ? AND productId = ?',
     [userId, productId]
     );
-    return result;
+    return result[0];
    }
 
 

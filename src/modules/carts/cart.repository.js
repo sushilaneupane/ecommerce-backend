@@ -40,7 +40,7 @@ class CartRepository {
           users.lastName, 
           users.email, 
           users.phone, 
-          users.id, 
+          users.id AS userId, 
           quantity,
           products.name AS productName, 
           products.price,
