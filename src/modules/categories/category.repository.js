@@ -23,7 +23,7 @@ class CategoryRepository {
     'SELECT * FROM categories WHERE name = ?',
     [name]
     );
-    return result;
+    return result[0];
    }
 
 

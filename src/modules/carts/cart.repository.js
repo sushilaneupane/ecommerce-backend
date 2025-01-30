@@ -75,7 +75,7 @@ class CartRepository {
     );
 
     if (result.affectedRows === 0) throw new Error('cart not found');
-    return { id, quantity, userId, productId };
+    return { id, quantity, userId, productId }[0];;
   }
 
   async deleteCart(id) {
