@@ -33,7 +33,7 @@ class WishlistService {
             return wishlistByUserId;
         }
         catch(error){
-            throw new Error('Error fetching wishlist:' + error.message);
+            throw new Error(error.message);
         }
     }
 

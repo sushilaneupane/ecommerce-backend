@@ -35,7 +35,16 @@ class ProductRepository {
 };
 
   getProductsByCategoryId = async (categoryId) => {
-    const [rows] = await pool.execute('SELECT * FROM products WHERE categoryId = ?', [categoryId]);
+    const [rows] = await pool.execute( `SELECT 
+      products.id, 
+      products.name AS productName, 
+      products.price, 
+      products.description,
+      categories.name AS categoryName, 
+      categories.description AS categoryDescription
+     FROM products
+     INNER JOIN categories ON products.categoryId = categories.id
+     WHERE categoryId = ?`, [categoryId]);
     return rows;
   };
 

@@ -31,9 +31,9 @@ class WishlistController {
       const wishlistByUserId = await this.wishlistService.getWishlistByUserId(userId);
       res.status(200).json( wishlistByUserId);
     } catch (error) {
-      res.status(500).json({ message: 'Error fetching wishlist', error: error.message });
+      res.status(400).json(error.message );
     }
-  };
+  };  
   
 
 
@@ -60,12 +60,8 @@ class WishlistController {
 
   deleteWishlist = async (req, res) => {
     const { id } = req.params;
-    try {
       const result = await this.wishlistService.deleteWishlist(id);
       res.status(200).json(result);
-    } catch (error) {
-      res.status(500).json({ message: 'Error deleting wishlist', error: error.message });
-    }
   };
 }
 
