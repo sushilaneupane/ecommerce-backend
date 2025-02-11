@@ -4,12 +4,12 @@ import setupRoutes from './routes/index.js';
 import dotenv from 'dotenv';
 
 dotenv.config();
-
 const app = express();
 
 app.use(cors());
-
 app.use(json());
+
+app.use('/uploads', express.static('uploads'));
 
 setupRoutes(app);
 

@@ -10,6 +10,8 @@ class ProductService {
       const products = await this.productRepository.getAllProducts();
       return { status: 200, data: products };
     } catch (error) {
+      console.log(error);
+      
       return { status: 500, message: 'Error fetching products', error: error.message };
     }
   };
@@ -18,21 +20,33 @@ class ProductService {
     try {
       const product = await this.productRepository.getProductById(id);
       if (product) {
-        return { status: 200, data: product };
-      } else {
-        return { status: 404, message: 'Product not found' };
+        const images = await this.productRepository.getProductImages(id);
+        return { status: 200, data: { ...product, images } };
       }
+      return { status: 404, message: 'Product not found' };
     } catch (error) {
+      console.log(error);
+      
       return { status: 500, message: 'Error fetching product', error: error.message };
     }
   };
 
-  createProduct = async (name, description, price, categoryId) => {
+  createProduct = async (name, description, price, categoryId, images) => {
     try {
       const newProduct = await this.productRepository.createProduct(name, description, price, categoryId);
-      return { status: 201, data: newProduct };
+      if (images && images.length > 0) {
+        const imagePaths = images.map(file => file.filename);
+        await this.productRepository.addProductImages(newProduct.id, imagePaths);
+      }
+      return { 
+        status: 201, 
+        data: { 
+          ...newProduct, 
+          images: await this.productRepository.getProductImages(newProduct.id) 
+        } 
+      };
     } catch (error) {
-      return { status: 500, message: 'Error creating product', error: error };
+      return { status: 500, message: 'Error creating product', error: error.message };
     }
   };
 
@@ -41,9 +55,8 @@ class ProductService {
       const updatedProduct = await this.productRepository.updateProduct(id, name, description, price, categoryId);
       if (updatedProduct) {
         return { status: 200, data: updatedProduct };
-      } else {
-        return { status: 404, message: 'Product not found' };
       }
+      return { status: 404, message: 'Product not found' };
     } catch (error) {
       return { status: 500, message: 'Error updating product', error: error.message };
     }
@@ -54,9 +67,8 @@ class ProductService {
       const isDeleted = await this.productRepository.deleteProduct(id);
       if (isDeleted) {
         return { status: 200, message: 'Product deleted successfully' };
-      } else {
-        return { status: 404, message: 'Product not found' };
       }
+      return { status: 404, message: 'Product not found' };
     } catch (error) {
       return { status: 500, message: 'Error deleting product', error: error.message };
     }

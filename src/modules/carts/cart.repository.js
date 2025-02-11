@@ -42,6 +42,7 @@ class CartRepository {
           users.phone, 
           users.id AS userId, 
           quantity,
+          products.id AS productId,
           products.name AS productName, 
           products.price,
           categories.name AS categoryName, 
@@ -67,16 +68,19 @@ class CartRepository {
     );
     return { id: result.insertId, quantity, userId, productId };
   }
-
   async updateCart(id, quantity, userId, productId) {
     const [result] = await pool.execute(
       'UPDATE carts SET quantity = ?, userId = ?, productId = ? WHERE id = ?',
       [quantity, userId, productId, id]
     );
-
-    if (result.affectedRows === 0) throw new Error('cart not found');
-    return { id, quantity, userId, productId }[0];;
+  
+    if (result.affectedRows === 0) {
+      throw new Error('Cart update failed or cart not found.');
+    }
+  
+    return { id, quantity, userId, productId };
   }
+  
 
   async deleteCart(id) {
     const [result] = await pool.execute('DELETE FROM carts WHERE id = ?', [id]);

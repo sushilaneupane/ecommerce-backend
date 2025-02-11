@@ -25,12 +25,19 @@ class ProductController {
   };
 
   createProduct = async (req, res) => {
-    const { name, description, price, categoryId } = req.body;
     try {
-      const result = await this.productService.createProduct(name, description, price, categoryId);
-      res.status(result.status).json(result.message || result.data);
+      const { name, description, price, categoryId } = req.body;
+      const result = await this.productService.createProduct(
+        name,
+        description,
+        parseFloat(price),
+        parseInt(categoryId),
+        req.files 
+      );
+
+      return res.status(result.status).json(result.data || { message: result.message });
     } catch (error) {
-      res.status(500).json({ message: 'Error creating product', error: error });
+      res.status(500).json({ message: 'Error creating product', error: error.message });
     }
   };
 
@@ -59,7 +66,7 @@ class ProductController {
     const { categoryId } = req.params;
     try {
       const result = await this.productService.getProductsByCategoryId(categoryId);
-     return res.status(result.status).json(result.message || result.data);
+      return res.status(result.status).json(result.message || result.data);
     } catch (error) {
       res.status(500).json({ message: 'Error fetching products for category', error: error.message });
     }
