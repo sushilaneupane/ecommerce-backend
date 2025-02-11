@@ -63,37 +63,63 @@ CREATE TABLE IF NOT EXISTS address (
     updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS order (
-     id INT AUTO_INCREMENT PRIMARY KEY,
-    userId INT,
-     FOREIGN KEY ( userId ) REFERENCES users(id) ON DELETE CASCADE,
-   order_date TIMESTAMP NOT NULL,
-   status  VARCHAR(255) NOT NULL,
-   total_price DECIMAL(10, 2) NOT NULL,NOT NULL,
+CREATE TABLE IF NOT EXISTS orders (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    userId INT NOT NULL,
+    totalAmount DECIMAL(10,2) NOT NULL,
+    shippingCost DECIMAL(10,2) DEFAULT 0.00,
+    addressId INT NOT NULL,
+    orderStatus ENUM(
+        'pending', 
+        'processing', 
+        'shipped', 
+        'delivered', 
+        'cancelled', 
+        'returned'
+    ) DEFAULT 'pending',
+    FOREIGN KEY (userId) REFERENCES users(id),
+    FOREIGN KEY (addressId) REFERENCES address(id),
     createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS order_Iteams(
-     id INT AUTO_INCREMENT PRIMARY KEY,
-    oreder_Id int ,
-     FOREIGN KEY ( order) REFERENCES order(id) ON DELETE CASCADE,
+CREATE TABLE order_items (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    orderId INT NOT NULL,
+    productId INT NOT NULL,
+    quantity INT NOT NULL,
+    price DECIMAL(10,2) NOT NULL,
+    subtotal DECIMAL(10,2) GENERATED ALWAYS AS (quantity * price) STORED,
+    FOREIGN KEY (orderId) REFERENCES orders(id) ON DELETE CASCADE,
+    FOREIGN KEY ( productId ) REFERENCES products(id) ON DELETE CASCADE,
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+
+CREATE TABLE payments (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    orderId INT NOT NULL,
+    paymentMethod VARCHAR(50) NOT NULL,
+    transactionId VARCHAR(255) UNIQUE,
+    amount DECIMAL(10,2) NOT NULL,
+    paymentStatus ENUM(
+        'pending', 
+        'completed', 
+        'failed', 
+        'refunded'
+    ) DEFAULT 'pending',
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    FOREIGN KEY (orderId) REFERENCES orders(id),
+);
+
+
+CREATE TABLE IF NOT EXISTS product_image (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    image VARCHAR(255) NOT NULL,
     productId INT,
     FOREIGN KEY ( productId ) REFERENCES products(id) ON DELETE CASCADE,
-    quantity INT,
-    price DECIMAL(10, 2) NOT NULL,
-    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
-
-CREATE TABLE IF NOT EXISTS payments(
-     id INT AUTO_INCREMENT PRIMARY KEY,
-    oreder_Id int ,
-     FOREIGN KEY ( order) REFERENCES order(id) ON DELETE CASCADE,
-    payment_date TIMESTAMP,
-    amount   DECIMAL(10, 2) NOT NULL,,
-    pament_method VARCHAR(255),
-    pament_status VARCHAR(255),
     createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
