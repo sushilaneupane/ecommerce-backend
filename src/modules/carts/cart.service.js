@@ -36,9 +36,13 @@ class CartService {
 
   async createCart(quantity, userId, productId) {
     try {
+      const checkAlreadyAddedCart = await this.cartRepository.getCartByUserAndProdutId(userId, productId)
+      if (checkAlreadyAddedCart){
+        throw new Error('Cart already exist with given userId');
+      }
       return await this.cartRepository.createCart(quantity, userId, productId);
     } catch (error) {
-      throw new Error('Error creating cart: ' + error.message);
+      throw new Error(error.message);
     }
   }
   

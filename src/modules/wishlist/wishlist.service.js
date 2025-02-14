@@ -40,8 +40,6 @@ class WishlistService {
     async createWishlist(userId, productId) {
         try {
             const alreadyExists = await this.wishlistRepository.checkIfExists(userId, productId);
-            console.log(alreadyExists, "aldeeeeee");
-
             if (alreadyExists) {
                 throw new Error('This wishlist entry already exists');
             }

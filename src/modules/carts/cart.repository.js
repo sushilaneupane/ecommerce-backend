@@ -88,6 +88,12 @@ class CartRepository {
     if (result.affectedRows === 0) throw new Error('cart  not found');
     return { message: 'user deleted successfully' };
   }
+  async getCartByUserAndProdutId(userId, productId){
+   const [rows] = await pool.execute(
+    `SELECT  * FROM carts WHERE userId = ? AND productId = ?`,[userId, productId]
+   );
+   return rows[0]
+  }
 }
 
 
