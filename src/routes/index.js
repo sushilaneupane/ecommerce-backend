@@ -4,7 +4,7 @@ import userRoutes from '../modules/users/user.route.js';
 import addressRoutes from '../modules/address/address.route.js';
 import cartRoutes from '../modules/carts/cart.route.js';
 import wishlistRoute from '../modules/wishlist/wishlist.route.js';
-
+import OrdersRoute from '../modules/orders/orders.route.js';
 
 export default (app) => {
   app.use('/api/categories', categoryRoutes);
@@ -13,5 +13,6 @@ export default (app) => {
   app.use('/api/users/login', userRoutes);
   app.use('/api/address', addressRoutes);
   app.use('/api/carts', cartRoutes);
-  app.use('/api/wishlist', wishlistRoute)
+  app.use('/api/wishlist', wishlistRoute);
+  app.use('/api/orders', OrdersRoute)
 };
