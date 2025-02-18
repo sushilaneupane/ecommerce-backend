@@ -3,7 +3,7 @@ import SubcategoryController from './subcategory.controller.js';
 import checkAdminRole from '../middleware/check-admin.js'
 
 const router = express.Router();
-const subcategoryController = new CategoryController();
+const subcategoryController = new SubcategoryController();
 
 router.get('/', subcategoryController.getAllSubcategories);
 router.get('/:id', subcategoryController.getSubcategoryById);
