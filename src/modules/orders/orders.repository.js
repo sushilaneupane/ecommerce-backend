@@ -21,10 +21,10 @@ class OrdersRepository {
   }
 
 
-async createPayments( orderId, paymentMethod, transactionId,amount ){
+async createPayments( orderId, paymentMethod, transactionId,totalAmount ){
 const [result] = await pool.execute(
   'INSERT INTO payments (orderId, PaymentMethod, transactionId, amount) VALUES (?, ?, ?, ?)',
-  [orderId, paymentMethod, transactionId, amount]
+  [orderId, paymentMethod, transactionId, totalAmount]
 )
 return {id: result.insertId, orderId, paymentMethod, transactionId, amount};
 }

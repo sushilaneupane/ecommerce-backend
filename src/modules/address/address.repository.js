@@ -38,6 +38,25 @@ class AddressRepository {
     );
     return rows[0]; 
   }
+  async getAddressByUserId(userId) {    
+    const [rows] = await pool.execute(
+      `SELECT 
+        address.id, 
+        users.firstName AS firstName, 
+        users.lastName AS lastName,
+         address.province AS province, 
+        address.district AS district,
+        address.zone AS zone,
+        address.address AS fullAddress, 
+        users.email AS email,
+        users.phone AS phone
+       FROM address
+       INNER JOIN users ON address.userId = users.id
+       WHERE address.userId = ?`, 
+      [userId]
+    );
+    return rows[0]; 
+  }
     
     async createAddress(province, district, zone, address, userId) { 
     
