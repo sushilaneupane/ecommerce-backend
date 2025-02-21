@@ -27,6 +27,14 @@ class AddressService {
     }
   }
 
+  async getAddressByUserId(userId) {
+    try {
+      return await this.addressRepository.getAddressByUserId(userId); 
+    } catch (error) {
+      throw new Error('Error fetching address: ' + error.message);
+    }
+  }
+
   async createAddress(province, district, zone, address, userId) {
     try {
       const user = await this.UserService.getUserById(userId);

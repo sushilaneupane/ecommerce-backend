@@ -4,7 +4,7 @@ class OrdersService {
   constructor() {
     this.ordersRepository = new OrdersRepository();
   }
-  async createOrders(userId, shippingCost, totalAmount, addressId, products, transactionId, paymentMethod, amount) {
+  async createOrders(userId, shippingCost, totalAmount, addressId, products, transactionId, paymentMethod) {
     try {
       const orders = await this.ordersRepository.createOrders(userId, shippingCost, totalAmount, addressId);
         const orderId = orders.id; 

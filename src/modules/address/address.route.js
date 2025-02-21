@@ -9,7 +9,8 @@ const addressController = new AddressController();
 
 
 router.get('/', verifyToken,addressController.getAllAddress);
-router.get('/:id',verifyToken, addressController.getAddressById); 
+router.get('/:id',verifyToken, addressController.getAddressById);
+router.get('/user/:userId',verifyToken, addressController.getAddressByUserId); 
 router.post('/',verifyToken, addressController.createAddress);
 router.put('/:id',verifyToken, addressController.updateAddress);
 router.delete('/:id',checkAdminRole, addressController.deleteAddress);

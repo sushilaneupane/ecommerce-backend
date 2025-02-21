@@ -26,6 +26,19 @@ class AddressController {
       res.status(500).json({ message: 'Error fetching address', error: error.message });
     }
   };
+  getAddressByUserId = async (req, res) => {
+    const { userId } = req.params;    
+    try {
+      const address = await this.addressService.getAddressByUserId(userId);
+      if (address) {
+        res.status(200).json(address);
+      } else {
+        res.status(404).json('Address not found');
+      }
+    } catch (error) {
+      res.status(500).json({ message: 'Error fetching address', error: error.message });
+    }
+  };
 
   createAddress = async (req, res) => {
     try {
