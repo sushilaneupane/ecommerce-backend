@@ -41,24 +41,53 @@ class CartRepository {
           users.email, 
           users.phone, 
           users.id AS userId, 
-          quantity,
+          carts.quantity,
           products.id AS productId,
           products.name AS productName, 
           products.price,
           categories.name AS categoryName, 
-          categories.description AS categoryDescription
+          categories.description AS categoryDescription,
+          product_image.image AS imageUrl
         FROM carts
         INNER JOIN users ON carts.userId = users.id
         INNER JOIN products ON carts.productId = products.id
         INNER JOIN categories ON products.categoryId = categories.id
+        INNER JOIN product_image ON product_image.productId = products.id
         WHERE users.id = ?`, 
         [userId]
       );
-      return rows;
+  
+      if (rows.length === 0) throw new Error('No cart found for this user');
+  
+      const cartMap = {};
+  
+      rows.forEach(row => {
+        const key = row.id;
+        if (!cartMap[key]) {
+          cartMap[key] = {
+            cartId: row.id,
+            userId: row.userId,
+            firstName: row.firstName,
+            lastName: row.lastName,
+            email: row.email,
+            phone: row.phone,
+            quantity: row.quantity,
+            productId: row.productId,
+            productName: row.productName,
+            price: row.price,
+            categoryName: row.categoryName,
+            categoryDescription: row.categoryDescription,
+            images: []
+          };
+        }
+        cartMap[key].images.push(row.imageUrl);
+      });
+  
+      return Object.values(cartMap);
     } catch (error) {
       throw new Error(`Database query failed: ${error.message}`);
     }
-  }
+  }  
   
 
   async createCart(quantity, userId, productId) {

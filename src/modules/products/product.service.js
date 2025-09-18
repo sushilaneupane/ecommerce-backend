@@ -45,7 +45,7 @@ class ProductService {
           images: await this.productRepository.getProductImages(newProduct.id) 
         } 
       };
-    } catch (error) {
+    } catch (error) {      
       return { status: 500, message: 'Error creating product', error: error.message };
     }
   };
