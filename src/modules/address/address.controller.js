@@ -27,7 +27,7 @@ class AddressController {
     }
   };
   getAddressByUserId = async (req, res) => {
-    const { userId } = req.params;    
+    const { userId } = req.params;
     try {
       const address = await this.addressService.getAddressByUserId(userId);
       if (address) {

@@ -27,14 +27,24 @@ class UserRepository {
     return result;
    }
 
-  async updateUser(id, firstName, lastName, phone, email, password, role) {            
+async updateUser(id, firstName, lastName, phone, email) {
+  try {
     const [result] = await pool.execute(
-      'UPDATE users SET firstName = ?, lastName = ?, email = ?, phone = ?, password = ?, role = ? WHERE id = ?'
-      [firstName, lastName, email, phone, password, role, id]
+      'UPDATE users SET firstName = ?, lastName = ?, email = ?, phone = ? WHERE id = ?',
+      [firstName, lastName, email, phone, id]
     );
-    if (result.affectedRows === 0) throw new Error('User not found');
-    return { id, firstName, lastName, phone, email, password, role};
+
+    if (result.affectedRows === 0) {
+      throw new Error('User not found');
+    }
+
+    return { id, firstName, lastName, phone, email };
+  } catch (error) {
+    console.error("Error updating user:", error.message);
+    throw error;
   }
+}
+
 
   async deleteUser(id) {
     const [result] = await pool.execute('DELETE FROM users WHERE id = ?', [id]);

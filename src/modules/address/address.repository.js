@@ -47,7 +47,7 @@ class AddressRepository {
          address.province AS province, 
         address.district AS district,
         address.zone AS zone,
-        address.address AS fullAddress, 
+        address.address AS address, 
         users.email AS email,
         users.phone AS phone
        FROM address
@@ -81,7 +81,7 @@ class AddressRepository {
       [province, district, zone, address, userId, id] 
     );
     if (result.affectedRows === 0) throw new Error('Address not found');
-    return { id,province, district, zone, address, userId};
+    return { id, province, district, zone, address, userId};
   }
 
   async deleteAddress(id) {

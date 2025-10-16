@@ -85,7 +85,7 @@ class UserService {
       }
 
       const token = jwt.sign(
-        { id: user.id, role: user.role, email: user.email }, 
+        { id: user.id, role: user.role, email: user.email,  }, 
         process.env.JWTSECRETKEY,
         { expiresIn: "1h" }
       );
@@ -95,8 +95,7 @@ class UserService {
         user: { 
           id: user.id, 
           email: user.email, 
-          role: user.role,
-          name: user.firstName + ' ' + user.lastName
+          role: user.role 
         } 
       };
     } catch (error) {

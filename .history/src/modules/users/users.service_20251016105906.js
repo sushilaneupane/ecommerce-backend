@@ -96,7 +96,7 @@ class UserService {
           id: user.id, 
           email: user.email, 
           role: user.role,
-          name: user.firstName + ' ' + user.lastName
+          
         } 
       };
     } catch (error) {

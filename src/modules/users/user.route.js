@@ -6,8 +6,8 @@ import verifyToken from '../middleware/verify-token.js';
 const router = express.Router();
 const userController = new UserController();
 
-router.get('/', userController.getAllUsers);
-router.get('/:id', userController.getUserById);
+router.get('/', checkAdminRole, userController.getAllUsers);
+router.get('/:id',verifyToken, userController.getUserById);
 router.post('/', userController.createUser);
 router.put('/:id',verifyToken,userController.updateUser);
 router.delete('/:id',checkAdminRole, userController.deleteUser);
