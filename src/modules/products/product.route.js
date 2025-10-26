@@ -9,7 +9,7 @@ const productController = new ProductController();
 router.get('/', productController.getAllProducts);
 router.get('/:id', productController.getProductById);
 router.post('/', checkAdminRole, uploadProductImages, productController.createProduct);
-router.put('/:id', checkAdminRole, productController.updateProduct);
+router.put('/:id', checkAdminRole, uploadProductImages, productController.updateProductController);
 router.delete('/:id', checkAdminRole, productController.deleteProduct);
 router.get('/category/:categoryId', productController.getProductsByCategoryId);
 

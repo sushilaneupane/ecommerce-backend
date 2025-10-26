@@ -27,12 +27,14 @@ class ProductController {
   createProduct = async (req, res) => {
     try {
       const { name, description, price, categoryId } = req.body;
+      const newImages = req.files?.files || [];
+
       const result = await this.productService.createProduct(
         name,
         description,
         parseFloat(price),
         parseInt(categoryId),
-        req.files 
+        newImages
       );
 
       return res.status(result.status).json(result.data || { message: result.message });
@@ -41,14 +43,29 @@ class ProductController {
     }
   };
 
-  updateProduct = async (req, res) => {
-    const { id } = req.params;
-    const { name, description, price, categoryId } = req.body;
+  updateProductController = async (req, res) => {
     try {
-      const result = await this.productService.updateProduct(id, name, description, price, categoryId);
-      res.status(result.status).json(result.message || result.data);
+      const { id } = req.params;
+      const { name, description, price, categoryId, existingImages } = req.body;
+      const newImages = req.files?.files || [];
+      const parsedExistingImages = existingImages ? JSON.parse(existingImages) : [];
+      const result = await this.productService.updateProduct(
+        parseInt(id),
+        name,
+        description,
+        parseFloat(price),
+        parseInt(categoryId),
+        parsedExistingImages,
+        newImages
+      );
+
+      return res
+        .status(result.status)
+        .json(result.data || { message: result.message });
     } catch (error) {
-      res.status(500).json({ message: 'Error updating product', error: error.message });
+      console.log(error);
+      
+      res.status(500).json({ message: "Error updating product", error: error.message });
     }
   };
 

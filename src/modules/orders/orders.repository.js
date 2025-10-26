@@ -33,7 +33,6 @@ class OrdersRepository {
     return result.affectedRows > 0;
   }
 
-  // Fixed: getOrderHistory as a class method
   async getOrderHistory(userId) {
     try {
       const [orders] = await pool.execute(`
@@ -85,6 +84,19 @@ ORDER BY o.createdAt DESC;
       console.error(error);
       throw new Error('Failed to fetch order history');
     }
+  }
+  async updateOrderStatus(orderStatus, orderId) {
+    const [result] = await pool.execute(
+      'UPDATE orders SET orderStatus = ? WHERE id = ?',
+      [orderStatus, orderId]
+    );
+    return result.affectedRows > 0;
+  };
+  async getAllOrders() {
+    const [orders] = await pool.execute(
+      'SELECT orders.*, users.firstName, users.lastName FROM orders INNER JOIN users ON orders.userId = users.id'
+    );
+    return orders;
   }
 }
 

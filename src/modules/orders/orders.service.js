@@ -7,7 +7,6 @@ class OrdersService {
     this.cartRepository = new CartRepository();
   }
 
-  // Create a new order
   async createOrders(userId, shippingCost, totalAmount, addressId, products, transactionId, paymentMethod) {
     try {
       const orders = await this.ordersRepository.createOrders(userId, shippingCost, totalAmount, addressId);
@@ -26,11 +25,27 @@ class OrdersService {
     }
   }
 
-  // Get orders by user
   async getOrdersByUser(userId) {
     try {
       const orders = await this.ordersRepository.getOrderHistory(userId);
       return orders;
+    } catch (error) {
+      throw new Error('Error fetching orders: ' + error.message);
+    }
+  }
+  async updateOrderStatus(orderStatus, orderId) {
+    try {
+      const result = await this.ordersRepository.updateOrderStatus(orderStatus, orderId);
+      console.log(result, "result");
+      
+      return result;
+    } catch (error) {
+      throw new Error('Error updating order status: ' + error.message);
+    }   
+}
+  async getAllOrders() {
+    try {
+      return await this.ordersRepository.getAllOrders();
     } catch (error) {
       throw new Error('Error fetching orders: ' + error.message);
     }

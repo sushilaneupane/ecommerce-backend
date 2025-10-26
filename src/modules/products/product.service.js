@@ -11,7 +11,7 @@ class ProductService {
       return { status: 200, data: products };
     } catch (error) {
       console.log(error);
-      
+
       return { status: 500, message: 'Error fetching products', error: error.message };
     }
   };
@@ -26,7 +26,7 @@ class ProductService {
       return { status: 404, message: 'Product not found' };
     } catch (error) {
       console.log(error);
-      
+
       return { status: 500, message: 'Error fetching product', error: error.message };
     }
   };
@@ -38,27 +38,48 @@ class ProductService {
         const imagePaths = images.map(file => file.filename);
         await this.productRepository.addProductImages(newProduct.id, imagePaths);
       }
-      return { 
-        status: 201, 
-        data: { 
-          ...newProduct, 
-          images: await this.productRepository.getProductImages(newProduct.id) 
-        } 
+      return {
+        status: 201,
+        data: {
+          ...newProduct,
+          images: await this.productRepository.getProductImages(newProduct.id)
+        }
       };
-    } catch (error) {      
+    } catch (error) {
       return { status: 500, message: 'Error creating product', error: error.message };
     }
   };
 
-  updateProduct = async (id, name, description, price, categoryId) => {
+  updateProduct = async (id, name, description, price, categoryId, existingImages = [], newImages = []) => {
     try {
-      const updatedProduct = await this.productRepository.updateProduct(id, name, description, price, categoryId);
-      if (updatedProduct) {
-        return { status: 200, data: updatedProduct };
+      const updatedProduct = await this.productRepository.updateProduct(
+        id,
+        name,
+        description,
+        price,
+        categoryId
+      );
+
+      const currentImages = await this.productRepository.getProductImages(id);
+      const imagesToDelete = currentImages.filter(img => !existingImages.includes(img));
+
+      if (imagesToDelete.length > 0) {
+        await this.productRepository.deleteProductImages(imagesToDelete);
       }
-      return { status: 404, message: 'Product not found' };
+      if (newImages && newImages.length > 0) {
+        const imagePaths = newImages.map(file => file.filename);
+        await this.productRepository.addProductImages(id, imagePaths);
+      }
+      const finalImages = await this.productRepository.getProductImages(id);
+      return {
+        status: 200,
+        data: {
+          ...updatedProduct,
+          images: finalImages,
+        },
+      };
     } catch (error) {
-      return { status: 500, message: 'Error updating product', error: error.message };
+      return { status: 500, message: "Error updating product", error: error };
     }
   };
 

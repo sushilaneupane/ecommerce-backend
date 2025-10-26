@@ -5,10 +5,11 @@ import checkAdminRole from '../middleware/check-admin.js';
 const router = express.Router();
 const ordersController = new OrdersController();
 
-// Create order
+
 router.post('/', ordersController.createOrders);
 
-// Get orders by user
 router.get('/user/:userId', ordersController.getOrdersByUser);
 
+router.put('/:orderId', checkAdminRole, ordersController.updateOrderStatus);
+router.get('/', checkAdminRole, ordersController.getAllOrders);
 export default router;

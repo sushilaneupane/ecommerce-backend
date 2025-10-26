@@ -105,12 +105,25 @@ class ProductRepository {
   };
 
   getProductImages = async (productId) => {
+    console.log(productId, "productId");
     const [rows] = await pool.execute(
       'SELECT image FROM product_image WHERE productId = ?',
       [productId]
     );
     return rows.map(row => row.image);
   };
-}
+  deleteProductImages = async (imageNames) => {
+    try {
+      if (!imageNames || imageNames.length === 0) return false;
+      const [result] = await pool.query(
+        `DELETE FROM product_image WHERE image IN (?)`,
+        [imageNames]
+      );
 
+      return result.affectedRows > 0;
+    } catch (error) {
+      throw new Error(`Error deleting product images: ${error.message}`);
+    }
+  };
+}
 export default ProductRepository;
