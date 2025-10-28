@@ -42,7 +42,7 @@ class OrdersService {
     } catch (error) {
       throw new Error('Error updating order status: ' + error.message);
     }   
-}
+  }
   async getAllOrders() {
     try {
       return await this.ordersRepository.getAllOrders();
