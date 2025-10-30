@@ -106,6 +106,15 @@ class ProductService {
       return { status: 500, message: 'Error fetching products for category', error: error.message };
     }
   };
+
+  getTotalLengthProducts = async () => {
+    try {
+      const total = await this.productRepository.getTotalLengthProducts();
+      return total;
+    } catch (error) {
+      throw new Error("Error fetching total products: " + error.message);
+    }
+  };
 }
 
 export default ProductService;

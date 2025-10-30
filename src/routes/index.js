@@ -17,4 +17,5 @@ export default (app) => {
   app.use('/api/wishlist', wishlistRoute);
   app.use('/api/orders', OrdersRoute);
   app.use('/api/payments', PaymentRoute);
+  
 };

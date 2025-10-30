@@ -42,6 +42,7 @@ class ProductController {
       res.status(500).json({ message: 'Error creating product', error: error.message });
     }
   };
+  
 
   updateProductController = async (req, res) => {
     try {
@@ -88,6 +89,18 @@ class ProductController {
       res.status(500).json({ message: 'Error fetching products for category', error: error.message });
     }
   };
+ getTotalProducts = async (req, res) => {
+  try {
+    const total = await this.productService.getTotalLengthProducts();
+    res.status(200).json({ totalProducts: total });
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching total products", error: error.message });
+  }
+};
+
+
+
 }
+
 
 export default ProductController;

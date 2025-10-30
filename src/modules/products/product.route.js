@@ -12,5 +12,7 @@ router.post('/', checkAdminRole, uploadProductImages, productController.createPr
 router.put('/:id', checkAdminRole, uploadProductImages, productController.updateProductController);
 router.delete('/:id', checkAdminRole, productController.deleteProduct);
 router.get('/category/:categoryId', productController.getProductsByCategoryId);
+router.get("/total", productController.getTotalProducts);
+
 
 export default router;
