@@ -7,7 +7,8 @@ const ordersController = new OrdersController();
 
 
 router.post('/', ordersController.createOrders);
-
+router.get('/total', checkAdminRole, ordersController.getTotalOrders);
+    
 router.get('/user/:userId', ordersController.getOrdersByUser);
 
 router.put('/:orderId', checkAdminRole, ordersController.updateOrderStatus);

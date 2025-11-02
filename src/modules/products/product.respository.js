@@ -125,10 +125,13 @@ class ProductRepository {
       throw new Error(`Error deleting product images: ${error.message}`);
     }
   };
-  getTotalLengthProducts = async () => {
-    const [rows] = await pool.execute('SELECT COUNT(*) AS total FROM products');
-    return rows[0].total || 0;
-  };
+getTotalLengthProducts = async () => {
+  const [rows] = await pool.execute(
+    'SELECT COUNT(*) AS total FROM products;'
+  );
+  return rows[0].total;
+};
+
 
 }
 export default ProductRepository;

@@ -43,6 +43,7 @@ class OrdersService {
       throw new Error('Error updating order status: ' + error.message);
     }   
   }
+
   async getAllOrders() {
     try {
       return await this.ordersRepository.getAllOrders();
@@ -50,6 +51,15 @@ class OrdersService {
       throw new Error('Error fetching orders: ' + error.message);
     }
   }
+
+  getTotalOrders = async () => {
+  try {
+    return await this.ordersRepository.getTotalOrders();
+  } catch (error) {
+    throw new Error("Error counting orders");
+  }
+};
+
 }
 
 export default OrdersService;

@@ -61,6 +61,14 @@ class OrdersController {
       res.status(500).json({ message: 'Error fetching orders', error: error.message });
     }
   };
+  getTotalOrders = async (req, res) => {
+  try {
+    const totalOrders = await this.ordersService.getTotalOrders();
+    return res.status(200).json({ totalOrders });
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching total orders", error: error.message });
+  }
+};
 }
 
 

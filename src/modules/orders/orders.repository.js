@@ -98,6 +98,15 @@ ORDER BY o.createdAt DESC;
     );
     return orders;
   }
+  getTotalOrders = async () => {
+  try {
+    const [result] = await pool.query("SELECT COUNT(*) AS total FROM orders");
+    return result[0].total;
+  } catch (error) {
+    throw new Error("Error counting orders");
+  }
 }
 
+
+};
 export default OrdersRepository;

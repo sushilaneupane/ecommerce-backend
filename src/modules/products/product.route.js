@@ -7,12 +7,12 @@ const router = express.Router();
 const productController = new ProductController();
 
 router.get('/', productController.getAllProducts);
+router.get("/total", productController.getTotalProducts);
 router.get('/:id', productController.getProductById);
 router.post('/', checkAdminRole, uploadProductImages, productController.createProduct);
 router.put('/:id', checkAdminRole, uploadProductImages, productController.updateProductController);
 router.delete('/:id', checkAdminRole, productController.deleteProduct);
 router.get('/category/:categoryId', productController.getProductsByCategoryId);
-router.get("/total", productController.getTotalProducts);
 
 
 export default router;
