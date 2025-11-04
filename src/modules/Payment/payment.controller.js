@@ -1,7 +1,10 @@
 import PaymentService from "./payment.service.js";
 import Stripe from "stripe";
+import dotenv from "dotenv";
 
-const stripe = new Stripe('sk_test_51SPpgz9dnkZdN5mX6g9tyjx1ysXEui3hr0rSwgiuMiRN3oSeBDnyzbXGkdf40cJHK2hm4lNfL3nCbkyWMmmZF34p00YIW1V9VV');
+dotenv.config();
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 class PaymentController {
   constructor() {
     this.paymentService = new PaymentService();
