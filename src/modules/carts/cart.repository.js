@@ -56,9 +56,7 @@ class CartRepository {
         WHERE users.id = ?`, 
         [userId]
       );
-  
-      if (rows.length === 0) throw new Error('No cart found for this user');
-  
+    
       const cartMap = {};
   
       rows.forEach(row => {

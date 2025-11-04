@@ -25,14 +25,15 @@ class ProductRepository {
 
   getProductById = async (id) => {
     const [rows] = await pool.execute(
-      `SELECT 
-    p.id, 
-    p.name AS productName, 
-    p.price, 
+      `SELECT
+    p.id,
+    p.name AS productName,
+    p.price,
     p.description,
-    c.name AS categoryName, 
+    c.name AS categoryName,
+    p.categoryId,
     c.description AS categoryDescription,
-    CASE 
+    CASE
       WHEN COUNT(pi.id) = 0 THEN JSON_ARRAY()
       ELSE JSON_ARRAYAGG(JSON_OBJECT('id', pi.id, 'image', pi.image))
     END AS images
@@ -125,11 +126,47 @@ class ProductRepository {
       throw new Error(`Error deleting product images: ${error.message}`);
     }
   };
-getTotalLengthProducts = async () => {
-  const [rows] = await pool.execute(
-    'SELECT COUNT(*) AS total FROM products;'
-  );
-  return rows[0].total;
+  getTotalLengthProducts = async () => {
+    const [rows] = await pool.execute(
+      'SELECT COUNT(*) AS total FROM products;'
+    );
+    return rows[0].total;
+  };
+
+  trackProductView = async (userId, productId) => {
+    await pool.execute(
+      `INSERT INTO user_clicks (userId, productId) VALUES (?, ?)`,
+      [userId, productId]
+    );
+  };
+
+getHybridRecommendations = async (categoryId, currentProductId, limit = 12) => {
+  if (!categoryId) return [];
+  currentProductId = currentProductId ?? null;
+  limit = Number(limit) || 12;
+  const query = `
+    SELECT 
+      p.id,
+      p.name AS productName,
+      p.price,
+      p.description,
+      CASE
+        WHEN COUNT(pi.id) = 0 THEN JSON_ARRAY()
+        ELSE JSON_ARRAYAGG(JSON_OBJECT('id', pi.id, 'image', pi.image))
+      END AS images,
+      COUNT(uc.productId) AS popularity
+    FROM products p
+    LEFT JOIN product_image pi ON p.id = pi.productId
+    LEFT JOIN user_clicks uc ON p.id = uc.productId
+    WHERE p.categoryId = ?
+      AND p.id != ?
+    GROUP BY p.id, p.name, p.price, p.description
+    ORDER BY popularity DESC, RAND()
+    LIMIT ${limit}  -- ✅ Inject directly
+  `;
+
+  const [rows] = await pool.execute(query, [categoryId, currentProductId]);
+  return rows;
 };
 
 

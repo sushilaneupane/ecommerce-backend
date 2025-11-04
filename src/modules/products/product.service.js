@@ -16,20 +16,38 @@ class ProductService {
     }
   };
 
-  getProductById = async (id) => {
+  getProductById = async (id, userId = null) => {
     try {
       const product = await this.productRepository.getProductById(id);
-      if (product) {
-        const images = await this.productRepository.getProductImages(id);
-        return { status: 200, data: { ...product, images } };
+      if (!product) {
+        return { status: 404, message: "Product not found" };
       }
-      return { status: 404, message: 'Product not found' };
+      const images = await this.productRepository.getProductImages(id);
+      if (userId) {
+        await this.productRepository.trackProductView(userId, id);
+      }
+      const recommendedProducts = await this.productRepository.getHybridRecommendations(
+        product.categoryId,
+        id
+      );
+      return {
+        status: 200,
+        data: {
+          ...product,
+          images,
+          recommendedProducts,
+        },
+      };
     } catch (error) {
-      console.log(error);
-
-      return { status: 500, message: 'Error fetching product', error: error.message };
+      console.error(error);
+      return {
+        status: 500,
+        message: "Error fetching product",
+        error: error.message,
+      };
     }
   };
+
 
   createProduct = async (name, description, price, categoryId, images) => {
     try {

@@ -7,6 +7,7 @@ const paymentCtrl = new paymentController();
 
 router.get('/', checkAdminRole, paymentCtrl.getAllPayments);
 router.put('/:paymentId',  checkAdminRole, paymentCtrl.updatePayment);
+router.post('/create-payment-intent', paymentCtrl.createEsewaTransaction);
 
 
 export default router;

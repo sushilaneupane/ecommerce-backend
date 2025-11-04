@@ -6,7 +6,7 @@ class OrdersController {
   }
 
   createOrders = async (req, res) => {
-    const { userId, shippingCost, totalAmount, addressId, products, transactionId, paymentMethod } = req.body;
+    const { userId, shippingCost, totalAmount, addressId, products, transactionId, paymentMethod, paymentStatus } = req.body;
     try {
       const newOrder = await this.ordersService.createOrders(
         userId,
@@ -15,7 +15,8 @@ class OrdersController {
         addressId,
         products,
         transactionId,
-        paymentMethod
+        paymentMethod,
+        paymentStatus
       );
       res.status(201).json({
         message: "Order created successfully!",

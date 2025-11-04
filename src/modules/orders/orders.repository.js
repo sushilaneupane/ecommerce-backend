@@ -17,12 +17,12 @@ class OrdersRepository {
     return { id: result.insertId, orderId, productId, quantity, price };
   }
 
-  async createPayments(orderId, paymentMethod, transactionId, totalAmount) {
+  async createPayments(orderId, paymentMethod, transactionId, totalAmount, paymentStatus) {
     const [result] = await pool.execute(
-      'INSERT INTO payments (orderId, paymentMethod, transactionId, amount) VALUES (?, ?, ?, ?)',
-      [orderId, paymentMethod, transactionId, totalAmount]
+      'INSERT INTO payments (orderId, paymentMethod, transactionId, amount, paymentStatus) VALUES (?, ?, ?, ?, ?)',
+      [orderId, paymentMethod, transactionId, totalAmount, paymentStatus]
     );
-    return { id: result.insertId, orderId, paymentMethod, transactionId, totalAmount };
+    return { id: result.insertId, orderId, paymentMethod, transactionId, totalAmount, paymentStatus };
   }
 
   async removeCartItemByProductId(userId, productId) {

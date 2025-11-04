@@ -14,15 +14,20 @@ class ProductController {
     }
   };
 
-  getProductById = async (req, res) => {
-    const { id } = req.params;
-    try {
-      const result = await this.productService.getProductById(id);
-      res.status(result.status).json(result.message || result.data);
-    } catch (error) {
-      res.status(500).json({ message: 'Error fetching product', error: error.message });
-    }
-  };
+getProductById = async (req, res) => {
+  const { id } = req.params;
+  const userId = req.query?.userId || null;
+
+  try {
+    const result = await this.productService.getProductById(id, userId);
+    res.status(result.status).json(result.message || result.data);
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ message: "Error fetching product", error: error.message });
+  }
+};
 
   createProduct = async (req, res) => {
     try {
