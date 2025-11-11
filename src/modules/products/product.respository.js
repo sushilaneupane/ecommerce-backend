@@ -14,10 +14,10 @@ class ProductRepository {
         WHEN COUNT(pi.id) = 0 THEN JSON_ARRAY()
         ELSE JSON_ARRAYAGG(JSON_OBJECT('id', pi.id, 'image', pi.image))
       END AS images
-     FROM products AS p
-     INNER JOIN categories AS c ON p.categoryId = c.id
-     LEFT JOIN product_image AS pi ON p.id = pi.productId
-     GROUP BY p.id, p.name, p.price, p.description, c.name, c.description`,
+    FROM products AS p
+    INNER JOIN categories AS c ON p.categoryId = c.id
+    LEFT JOIN product_image AS pi ON p.id = pi.productId
+    GROUP BY p.id, p.name, p.price, p.description, c.name, c.description`,
     );
 
     return rows;
@@ -37,11 +37,11 @@ class ProductRepository {
       WHEN COUNT(pi.id) = 0 THEN JSON_ARRAY()
       ELSE JSON_ARRAYAGG(JSON_OBJECT('id', pi.id, 'image', pi.image))
     END AS images
-   FROM products AS p
-   INNER JOIN categories AS c ON p.categoryId = c.id
-   LEFT JOIN product_image AS pi ON p.id = pi.productId
-   WHERE p.id = ?
-   GROUP BY p.id, p.name, p.price, p.description, c.name, c.description`,
+  FROM products AS p
+  INNER JOIN categories AS c ON p.categoryId = c.id
+  LEFT JOIN product_image AS pi ON p.id = pi.productId
+  WHERE p.id = ?
+  GROUP BY p.id, p.name, p.price, p.description, c.name, c.description`,
       [id]
     );
     return rows[0];
@@ -60,11 +60,11 @@ class ProductRepository {
         WHEN COUNT(pi.id) = 0 THEN JSON_ARRAY()
         ELSE JSON_ARRAYAGG(JSON_OBJECT('id', pi.id, 'image', pi.image))
       END AS images
-     FROM products AS p
-     INNER JOIN categories AS c ON p.categoryId = c.id
-     LEFT JOIN product_image AS pi ON p.id = pi.productId
-     WHERE p.categoryId = ?
-     GROUP BY p.id, p.name, p.price, p.description, c.name, c.description`,
+    FROM products AS p
+    INNER JOIN categories AS c ON p.categoryId = c.id
+    LEFT JOIN product_image AS pi ON p.id = pi.productId
+    WHERE p.categoryId = ?
+    GROUP BY p.id, p.name, p.price, p.description, c.name, c.description`,
       [categoryId]
     );
     return rows;
@@ -162,7 +162,7 @@ getHybridRecommendations = async (categoryId, currentProductId, limit = 12) => {
       AND p.id != ?
     GROUP BY p.id, p.name, p.price, p.description
     ORDER BY popularity DESC, RAND()
-    LIMIT ${limit}  -- ✅ Inject directly
+    LIMIT ${limit}
   `;
 
   const [rows] = await pool.execute(query, [categoryId, currentProductId]);
